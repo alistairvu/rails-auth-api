@@ -1,6 +1,6 @@
 class RegistrationsController < ApplicationController
   def create
-    user = User.create(registration_params)
+    user = User.create!(registration_params)
 
     if user
       session[:user_id] = user.id

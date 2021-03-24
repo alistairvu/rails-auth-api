@@ -28,7 +28,11 @@ const AppRegistration: React.FC = () => {
       )
       console.log(data)
     } catch (err) {
-      console.log(err)
+      if (err.status === 422) {
+        setRegistrationError("User already exists")
+      } else {
+        setRegistrationError(err.response.data.message)
+      }
     }
   }
 
