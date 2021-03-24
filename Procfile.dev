@@ -1,0 +1,2 @@
+web: yarn --cwd frontend start
+api: bundle exec rails server -p 3001
