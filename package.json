@@ -7,5 +7,10 @@
     "@rails/activestorage": "^6.0.0",
     "@rails/actioncable": "^6.0.0"
   },
+  "scripts": {
+    "build": "yarn --cwd frontend install && yarn --cwd frontend build",
+    "deploy": "cp -a frontend/build/. public/",
+    "heroku-postbuild": "yarn build && yarn deploy"
+  },
   "version": "0.1.0"
 }

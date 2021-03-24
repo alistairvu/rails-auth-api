@@ -1,16 +1,18 @@
-import Container from "react-bootstrap/Container"
-import { FunctionComponent } from "react"
+import { Switch, Route } from "react-router-dom"
+import HomePage from "./pages/HomePage"
+import DashboardPage from "./pages/DashboardPage"
 
-const App: FunctionComponent = () => {
+const App: React.FC = () => {
   return (
     <main>
-      <Container className="text-center py-5">
-        <h1>Welcome to React!</h1>
-        <h3 style={{ fontSize: 30 }}>
-          Get started by editing{" "}
-          <code style={{ color: "red" }}>src/App.tsx</code>
-        </h3>
-      </Container>
+      <Switch>
+        <Route exact path="/">
+          <HomePage />
+        </Route>
+        <Route path="/dashboard">
+          <DashboardPage />
+        </Route>
+      </Switch>
     </main>
   )
 }
