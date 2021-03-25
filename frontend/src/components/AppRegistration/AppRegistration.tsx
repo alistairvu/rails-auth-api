@@ -20,12 +20,14 @@ const AppRegistration: React.FC = () => {
     password_confirmation: "",
   })
   const [registrationError, setRegistrationError] = useState<string>("")
+  const [isRegistering, setIsRegistering] = useState<boolean>(false)
   const dispatch = useDispatch()
   const history = useHistory()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
+      setIsRegistering(true)
       const { data } = await axios.post(
         "/api/registrations",
         { user: registerInfo },
@@ -38,6 +40,8 @@ const AppRegistration: React.FC = () => {
       history.push("/dashboard")
     } catch (err) {
       setRegistrationError(err.response.data.message)
+    } finally {
+      setIsRegistering(false)
     }
   }
 
@@ -84,8 +88,8 @@ const AppRegistration: React.FC = () => {
         {registrationError && (
           <Alert variant="danger">{registrationError}</Alert>
         )}
-        <Button variant="primary" type="submit">
-          Register
+        <Button variant="primary" type="submit" disabled={isRegistering}>
+          {isRegistering ? "Registering..." : "Register"}
         </Button>
       </Form>
     </>

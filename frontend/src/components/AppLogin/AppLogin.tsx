@@ -18,6 +18,7 @@ const AppLogin: React.FC = () => {
     password: "",
   })
   const [loginError, setLoginError] = useState<string>("")
+  const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false)
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -69,8 +70,8 @@ const AppLogin: React.FC = () => {
           />
         </Form.Group>
         {loginError && <Alert variant="danger">{loginError}</Alert>}
-        <Button variant="primary" type="submit">
-          Login
+        <Button variant="primary" type="submit" disabled={isLoggingIn}>
+          {isLoggingIn ? "Logging in..." : "Log in"}
         </Button>
       </Form>
     </>
