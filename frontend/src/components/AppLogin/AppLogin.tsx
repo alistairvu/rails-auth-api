@@ -7,19 +7,17 @@ import { useDispatch } from "react-redux"
 import { loginUser } from "../../redux/user"
 import { useHistory } from "react-router-dom"
 
-interface RegisterInfoInterface {
+interface LoginInfoInterface {
   email: string
   password: string
-  password_confirmation: string
 }
 
-const AppRegistration: React.FC = () => {
-  const [registerInfo, setRegisterInfo] = useState<RegisterInfoInterface>({
+const AppLogin: React.FC = () => {
+  const [loginInfo, setLoginInfo] = useState<LoginInfoInterface>({
     email: "",
     password: "",
-    password_confirmation: "",
   })
-  const [registrationError, setRegistrationError] = useState<string>("")
+  const [loginError, setLoginError] = useState<string>("")
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -27,69 +25,56 @@ const AppRegistration: React.FC = () => {
     e.preventDefault()
     try {
       const { data } = await axios.post(
-        "/api/registrations",
-        { user: registerInfo },
+        "/api/sessions",
+        { user: loginInfo },
         { withCredentials: true }
       )
       console.log(data)
-      if (data.status === "created") {
+      if (data.logged_in) {
         dispatch(loginUser(data))
       }
       history.push("/dashboard")
     } catch (err) {
-      setRegistrationError(err.response.data.message)
+      setLoginError(err.response.data.message)
     }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRegisterInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    setLoginInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="register-email">
+        <Form.Group className="mb-3" controlId="login-email">
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type="email"
             name="email"
             placeholder="Enter email..."
-            value={registerInfo.email}
+            value={loginInfo.email}
             onChange={handleChange}
             required
           />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="register-password">
+        <Form.Group className="mb-3" controlId="login-password">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
             name="password"
             placeholder="Enter password..."
-            value={registerInfo.password}
+            value={loginInfo.password}
             onChange={handleChange}
             required
           />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="register-password_confirmation">
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
-            type="password"
-            name="password_confirmation"
-            placeholder="Confirm password..."
-            value={registerInfo.password_confirmation}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-        {registrationError && (
-          <Alert variant="danger">{registrationError}</Alert>
-        )}
+        {loginError && <Alert variant="danger">{loginError}</Alert>}
         <Button variant="primary" type="submit">
-          Register
+          Login
         </Button>
       </Form>
     </>
   )
 }
 
-export default AppRegistration
+export default AppLogin
