@@ -25,6 +25,7 @@ const AppLogin: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
+      setIsLoggingIn(true)
       const { data } = await axios.post(
         "/api/sessions",
         { user: loginInfo },
@@ -37,6 +38,8 @@ const AppLogin: React.FC = () => {
       history.push("/dashboard")
     } catch (err) {
       setLoginError(err.response.data.message)
+    } finally {
+      setIsLoggingIn(false)
     }
   }
 
